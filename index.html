@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#EDF3F8">
+  <meta name="description" content="CoastalTube — xem video YouTube không quảng cáo, giao diện Liquid Glass (kính lỏng kiểu iOS 26) theo đặc tả YTXTube">
+  <title>CoastalTube — Liquid Glass</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23263C59'/%3E%3Cpath d='M5 9c1-.9 2.2-.9 3.2 0s2.2.9 3.2 0 2.2-.9 3.2 0 2.2.9 3.2 0' stroke='%23C8D9E6' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M5 13c1-.9 2.2-.9 3.2 0s2.2.9 3.2 0 2.2-.9 3.2 0 2.2.9 3.2 0' stroke='%23AFC3D4' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M5 17c1-.9 2.2-.9 3.2 0s2.2.9 3.2 0 2.2-.9 3.2 0 2.2.9 3.2 0' stroke='%236D89A6' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.youtube.com/iframe_api" async></script>
+</head>
+<body>
+
+  <!-- Nền aurora: nhiên liệu cho kính (nội dung sau kính phải đủ màu) -->
+  <div class="lg-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- Icon sprite (Lucide-style, stroke-based, no emoji per design rules) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-waves" viewBox="0 0 24 24">
+      <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+      <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+      <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
+    <symbol id="i-thumb-up" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></symbol>
+    <symbol id="i-thumb-down" viewBox="0 0 24 24"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-comment" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  </svg>
+
+  <!-- LỚP 1: header capsule kính nổi (blur 18 · tint đọc chữ · capsule) -->
+  <header class="cm-header glass lg-header" id="topbar" data-hl>
+    <span class="glass-hl-el" aria-hidden="true"></span>
+    <div class="cm-header-inner">
+      <a href="#" class="cm-logo" id="logo-btn" title="CoastalTube — về trang chủ" aria-label="CoastalTube">
+        <span class="cm-logo-mark" aria-hidden="true">
+          <svg class="icon icon-lg"><use href="#i-waves"/></svg>
+        </span>
+        <span class="cm-logo-text">CoastalTube</span>
+      </a>
+
+      <form class="cm-search" id="search-form" role="search">
+        <div class="cm-search-box">
+          <input type="search" id="search-input" placeholder="Tìm kiếm video…" autocomplete="off" aria-label="Tìm kiếm video">
+          <button type="button" class="icon-btn sm" id="clear-search" hidden aria-label="Xoá từ khoá">
+            <svg class="icon"><use href="#i-x"/></svg>
+          </button>
+        </div>
+        <button type="submit" class="cm-search-btn pressable" aria-label="Tìm">
+          <svg class="icon"><use href="#i-search"/></svg>
+        </button>
+      </form>
+
+      <div class="cm-header-actions">
+        <button class="icon-btn pressable" id="mobile-search-toggle" title="Tìm kiếm" aria-label="Tìm kiếm">
+          <svg class="icon"><use href="#i-search"/></svg>
+        </button>
+        <button class="icon-btn pressable" id="theme-toggle" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện">
+          <svg class="icon" id="theme-icon"><use href="#i-moon"/></svg>
+        </button>
+        <button class="icon-btn pressable" id="more-btn" title="Tuỳ chọn khác" aria-label="Tuỳ chọn khác">
+          <svg class="icon"><use href="#i-more"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="cm-overlay" id="mobile-search-overlay" hidden>
+    <form class="cm-mobile-search" id="mobile-search-form">
+      <button type="button" class="icon-btn" id="mobile-search-back" aria-label="Quay lại">
+        <svg class="icon"><use href="#i-arrow-left"/></svg>
+      </button>
+      <input type="search" id="mobile-search-input" placeholder="Tìm kiếm trên CoastalTube…" autocomplete="off" aria-label="Tìm kiếm">
+      <button type="submit" class="icon-btn" aria-label="Tìm">
+        <svg class="icon"><use href="#i-search"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <main class="cm-main" id="main">
+
+    <!-- Chips rail: bar kính → pill kính → chip phẳng (kéo-dạy được) -->
+    <div class="cm-chips glass lg-chipsbar" id="chips-bar" aria-label="Danh mục">
+      <div class="chips-track" id="chips-track">
+        <span class="chip-pill" id="chip-pill" aria-hidden="true"><span class="pill-hl" id="pill-hl"></span></span>
+      </div>
+    </div>
+
+    <section class="cm-view" id="feed-view">
+      <div class="cm-results-bar" id="results-bar" hidden>
+        <p class="cm-results-label" id="results-label"></p>
+        <button type="button" class="btn ghost sm pressable" id="clear-results">
+          <svg class="icon"><use href="#i-x"/></svg><span>Quay lại</span>
+        </button>
+      </div>
+
+      <div class="cm-grid" id="video-grid"></div>
+
+      <div class="cm-empty" id="feed-empty" hidden>
+        <svg class="icon icon-xl"><use href="#i-inbox"/></svg>
+        <h2 id="feed-empty-title">Không thể tải dữ liệu</h2>
+        <p id="feed-empty-text">Máy chủ dữ liệu đang bận hoặc không phản hồi. Kiểm tra kết nối rồi thử lại nhé.</p>
+        <button type="button" class="btn primary pressable" id="feed-retry">
+          <svg class="icon"><use href="#i-refresh"/></svg><span>Thử lại</span>
+        </button>
+      </div>
+
+      <div class="cm-loader" id="feed-loader" hidden aria-hidden="true">
+        <span class="cm-loader-dot"></span><span class="cm-loader-dot"></span><span class="cm-loader-dot"></span>
+      </div>
+    </section>
+
+    <section class="cm-view" id="watch-view" hidden>
+      <div class="cm-watch">
+        <div class="cm-watch-primary">
+          <div class="cm-player" id="player-box"></div>
+
+          <h1 class="cm-watch-title" id="watch-title"></h1>
+          <p class="cm-watch-meta" id="watch-meta"></p>
+
+          <div class="cm-watch-row">
+            <div class="cm-channel pressable soft-press" id="channel-box">
+              <span class="cm-avatar lg" id="watch-channel-avatar"></span>
+              <div class="cm-channel-info">
+                <span class="cm-channel-name" id="watch-channel-name"></span>
+                <span class="cm-channel-subs" id="watch-channel-subs"></span>
+              </div>
+            </div>
+            <button type="button" class="btn primary pressable" id="subscribe-btn">
+              <svg class="icon"><use href="#i-bell"/></svg><span>Đăng ký</span>
+            </button>
+            <div class="cm-actions">
+              <div class="cm-vote" role="group" aria-label="Đánh giá">
+                <button type="button" class="btn ghost vote pressable" id="like-btn" aria-label="Thích">
+                  <svg class="icon"><use href="#i-thumb-up"/></svg><span id="like-count">—</span>
+                </button>
+                <span class="cm-vote-divider"></span>
+                <button type="button" class="btn ghost vote pressable" id="dislike-btn" aria-label="Không thích">
+                  <svg class="icon"><use href="#i-thumb-down"/></svg>
+                </button>
+              </div>
+              <button type="button" class="btn ghost pressable" id="share-btn">
+                <svg class="icon"><use href="#i-share"/></svg><span>Chia sẻ</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="cm-desc" id="desc-box">
+            <p class="cm-desc-text collapsed" id="desc-text"></p>
+            <button type="button" class="link-btn" id="desc-toggle" hidden>Thêm</button>
+          </div>
+
+          <div class="cm-comments" id="desktop-comments">
+            <div class="cm-comments-head">
+              <h2>Bình luận</h2>
+              <span class="cm-mono" id="comment-count"></span>
+            </div>
+            <div id="desktop-comments-list"></div>
+          </div>
+        </div>
+
+        <aside class="cm-watch-secondary">
+          <h2 class="cm-side-title">Video liên quan</h2>
+          <div class="cm-related" id="related-list"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cm-footer">
+    <p>CoastalTube — Liquid Glass · Dựa trên <a href="https://github.com/Koustubh12345/YTXTube" target="_blank" rel="noopener">YTXTube</a> (GPL-3.0)</p>
+  </footer>
+
+  <!-- Mini bar bình luận (mobile) — kiểu LiquidMiniPlayer, kéo xuống để tắt -->
+  <button type="button" class="cm-comment-preview glass lg-mini pressable soft-press" id="comment-preview" hidden data-hl>
+    <span class="glass-hl-el" aria-hidden="true"></span>
+    <span class="cm-avatar sm" id="preview-avatar"></span>
+    <span class="cm-preview-body">
+      <span class="cm-preview-count" id="preview-count"></span>
+      <span class="cm-preview-text" id="preview-text"></span>
+    </span>
+    <svg class="icon"><use href="#i-comment"/></svg>
+  </button>
+
+  <!-- GlassSheet bình luận (mobile): kính top r30 · blur 26 · glassFill(0.62) -->
+  <div class="cm-backdrop" id="comments-backdrop" hidden></div>
+  <div class="cm-sheet glass lg-sheet" id="comments-sheet" role="dialog" aria-modal="true" aria-label="Bình luận" hidden>
+    <span class="glass-hl-el" aria-hidden="true"></span>
+    <span class="cm-sheet-handle" aria-hidden="true"></span>
+    <div class="cm-sheet-head">
+      <h2>Bình luận</h2>
+      <span class="cm-mono" id="sheet-comment-count"></span>
+      <button type="button" class="icon-btn sm pressable" id="comments-close" aria-label="Đóng">
+        <svg class="icon"><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <div class="cm-sheet-body" id="sheet-comments-list"></div>
+  </div>
+
+  <!-- GlassSheet tuỳ chọn -->
+  <div class="cm-backdrop" id="options-backdrop" hidden></div>
+  <div class="cm-sheet glass lg-sheet options" id="options-sheet" role="dialog" aria-modal="true" aria-label="Tuỳ chọn" hidden>
+    <span class="glass-hl-el" aria-hidden="true"></span>
+    <span class="cm-sheet-handle" aria-hidden="true"></span>
+    <div class="cm-sheet-head">
+      <h2>Tuỳ chọn</h2>
+      <button type="button" class="icon-btn sm pressable" id="options-close" aria-label="Đóng">
+        <svg class="icon"><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <div class="cm-sheet-body">
+      <button type="button" class="cm-option pressable soft-press" id="option-theme">
+        <svg class="icon"><use href="#i-sun"/></svg>
+        <span>Giao diện: Sáng</span>
+      </button>
+      <button type="button" class="cm-option pressable soft-press" id="option-glass" role="switch" aria-checked="true">
+        <svg class="icon"><use href="#i-gem"/></svg>
+        <span>Hiệu ứng Liquid Glass</span>
+        <span class="cm-switch" aria-hidden="true"><i></i></span>
+      </button>
+      <a class="cm-option pressable soft-press" href="https://github.com/Koustubh12345/YTXTube" target="_blank" rel="noopener">
+        <svg class="icon"><use href="#i-github"/></svg>
+        <span>Dự án gốc · YTXTube</span>
+        <svg class="icon push"><use href="#i-external"/></svg>
+      </a>
+      <div class="cm-about">
+        <p><strong>CoastalTube</strong> · Liquid Glass (kính lỏng kiểu iOS 26) theo đặc tả YTXTube</p>
+        <p>Máy chủ dữ liệu: <span class="cm-mono" id="about-instance">—</span></p>
+        <p>Phát video qua trình nhúng chính thức của YouTube. Dự án phái sinh của YTXTube, giấy phép GPL-3.0.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast — capsule kính -->
+  <div class="cm-toast glass lg-toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
